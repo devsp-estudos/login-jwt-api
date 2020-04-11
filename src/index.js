@@ -14,6 +14,7 @@ mongoose.connect(process.env.MONGO_URL, options, (error) => {
 
 
 // configurando as rotas
+app.use(express.json())
 app.use('/user', require('./routes/userRouter'))
 
 
