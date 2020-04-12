@@ -1,6 +1,6 @@
 // configurando as variaveis de ambiente
 require('dotenv').config()
-const app = require('express').express()
+const app = require('express')()
 
 // conectando ao banco 
 require('./db/connection')
