@@ -1,20 +1,12 @@
 // configurando as variaveis de ambiente
 require('dotenv').config()
-const express = require('express')
-const app = express()
-
+const app = require('express').express()
 
 // conectando ao banco 
 require('./db/connection')
 
-
 // configurando as rotas
-app.use(express.json())
-
-app.use('/user', require('./routes/userRouter'))
-
-app.use('/admin', require('./routes/authRouter'))
-
+app.use(require('./routes'))
 
 // servindo a aplicação 
 app.listen(process.env.PORT, () => console.log('> Servidor rodando na porta: ', process.env.PORT))
