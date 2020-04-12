@@ -15,7 +15,10 @@ mongoose.connect(process.env.MONGO_URL, options, (error) => {
 
 // configurando as rotas
 app.use(express.json())
+
 app.use('/user', require('./routes/userRouter'))
+
+app.use('/admin', require('./routes/authRouter'))
 
 
 // servindo a aplicação 

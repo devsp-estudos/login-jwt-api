@@ -30,13 +30,16 @@ const login = async (req, res) => {
     const selectedUser = await User.findOne({ email })
     if (!selectedUser) return res.status(400).send('Email ou senha incorretos.')
 
+    // validando a senha que foi enviada com a do banco
     const passwordMatch = bcrypt.compareSync(password, selectedUser.password)
     if (!passwordMatch) return res.status(400).send('Email ou senha incorretos.')
 
-    const dadosDoToken = { _id: selectedUser._id }
+    // gerando um token
+    const dadosDoToken = { _id: selectedUser._id, admin: selectedUser.admin }
     const token = jwt.sign(dadosDoToken, process.env.TOKEN_SECRET)
 
-    res.header('authoriztion-token', token)
+    // add o token no cabeçalho da resposta
+    res.header('auth-token', token)
 
     res.send('Usuario logado.')
 }
