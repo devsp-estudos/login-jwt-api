@@ -1,11 +1,15 @@
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-
+const { registerValidade, loginValidade } = require('../controllers/validate')
 
 const register = async (req, res) => {
 
     const { name, email, password } = req.body
+
+    // validando os dados com uma lib 
+    const { error } = registerValidade({ name, email, password })
+    if (error) return res.status(400).send('Preencha os dados corretamente.')
 
     // validando se ja existe o usuario cadastrado
     const selectedUser = await User.findOne({ email })
@@ -14,6 +18,7 @@ const register = async (req, res) => {
     // gerando novo usuario 
     const user = new User({ name, email, password: bcrypt.hashSync(password) })
 
+    // salvando o documento
     try {
         const savedUser = await user.save()
         res.send(savedUser)
@@ -25,6 +30,10 @@ const register = async (req, res) => {
 const login = async (req, res) => {
 
     const { email, password } = req.body
+
+    // validando os dados com uma lib 
+    const { error } = loginValidade({ email, password })
+    if (error) return res.status(400).send('Preencha os dados corretamente.')
 
     // validando se existe o usuario cadastrado
     const selectedUser = await User.findOne({ email })
